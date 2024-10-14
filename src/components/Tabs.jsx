@@ -1,18 +1,27 @@
-export function Tabs() {
+export function Tabs(props) {
+    const { todos, selectedTab, setSelectedTab } = props
 
-    const tabs = ['All', 'Open', 'Completd']
-    return(
+    const tabs = ['All', 'Open', 'Completed']
+
+    return (
         <nav className="tab-container">
             {tabs.map((tab, tabIndex) => {
-                 return (
-                     <button key={tabIndex} onClick={() => console.log(tab)} className="tab-button">
-                        <h4>{tab} <span>(0)</span> </h4>
+                const numOfTasks = tab === 'All' ?
+                    todos.length :
+                    tab === 'Open' ?
+                        todos.filter(val => !val.complete).length :
+                        todos.filter(val => val.complete).length
 
-                     </button>
-                    
-                 )
+                return (
+                    <button onClick={() => {
+                        setSelectedTab(tab)
+                    }} key={tabIndex}
+                        className={"tab-button " + (tab == selectedTab ? ' tab-selected' : ' ')}>
+                        <h4>{tab} <span>({numOfTasks})</span></h4>
+                    </button>
+                )
             })}
-            
+            <hr />
         </nav>
     )
 }
